@@ -17,8 +17,7 @@ export const GET = handleAuth({
         const userEsists = await fetch(`${process.env.SERVER_URL}/user/get/${email}`, {
           method: 'GET',
         }); 
-        console.log(userEsists.isExisting)
-        if(!userEsists.isExisting){
+        if(userEsists.isExisting == undefined || userEsists.isExisting == 'undefined'){
           const apiResponse = await fetch(`${process.env.SERVER_URL}/user/create`, {
           method: 'POST',
           headers: {
@@ -28,10 +27,13 @@ export const GET = handleAuth({
         });
         // If the API call is unsuccessful, throw an error
         if (!apiResponse.ok) {
-          throw new Error('Failed to save user details',apiResponse);
+          return NextResponse.redirect(new URL('/api/auth/login', process.env.AUTH0_BASE_URL));
+        }else{
+          return NextResponse.redirect(new URL('/dashboard', process.env.AUTH0_BASE_URL));
         }
+        } else{
+          return NextResponse.redirect(new URL('/api/auth/login', process.env.AUTH0_BASE_URL));
         }
-        return NextResponse.redirect(new URL('/dashboard', process.env.AUTH0_BASE_URL));
 
       } catch (error) {
         console.error('API call failed:', error);
