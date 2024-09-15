@@ -1,0 +1,8 @@
+{
+  "/page": "app/page.js",
+  "/api/auth/[auth0]/route": "app/api/auth/[auth0]/route.js",
+  "/allergy/page": "app/allergy/page.js",
+  "/immunizations/page": "app/immunizations/page.js",
+  "/emergency/page": "app/emergency/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
+}

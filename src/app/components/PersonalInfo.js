@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import dotenv from "dotenv";
+dotenv.config();
 
 export default function PersonalInfo() {
+  const [error, setError] = useState(null);
+
   const [formData, setFormData] = useState({
     userName: "",
     userPhone: "",
@@ -21,22 +25,26 @@ export default function PersonalInfo() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/api/personal");
-        setFormData({
-          userName: response.data.userName,
-          userPhone: response.data.userPhone,
-          userEmail: response.data.userEmail,
-          userInsurance: response.data.userInsurance,
-          userMRN: response.data.userMRN,
-          userHeight: response.data.userHeight,
-          userGender: response.data.userGender,
-          userWeight: response.data.userWeight,
-          userAddress: response.data.userAddress,
-          userCity: response.data.userZipCode,
-          userZipCode: response.data.userZipCode,
-          userState: response.data.userState,
-          userCountry: response.data.userCountry,
-        });
+        if (formData._id) {
+          let response;
+          response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/user-info/${formData._id}`);
+          console.log("Response data: ", response.data);
+          setFormData({
+            userName: response.data.userName,
+            userPhone: response.data.userPhone,
+            userEmail: response.data.userEmail,
+            userInsurance: response.data.userInsurance,
+            userMRN: response.data.userMRN,
+            userHeight: response.data.userHeight,
+            userGender: response.data.userGender,
+            userWeight: response.data.userWeight,
+            userAddress: response.data.userAddress,
+            userCity: response.data.userCity,
+            userZipCode: response.data.userZipCode,
+            userState: response.data.userState,
+            userCountry: response.data.userCountry,
+          });
+        }
       } catch (err) {
         console.log(err);
       }
@@ -52,25 +60,45 @@ export default function PersonalInfo() {
         ...prevData,
         [name]: value,
       };
-      console.log(updatedData); // Print the updated form data
+      console.log("Updated data: ", updatedData);
       return updatedData;
     });
   };
 
+
   // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+     e.preventDefault();
+     console.log(process.env.NEXT_PUBLIC_SERVER_URL);
     try {
-      const response = await axios.put("/api/personal", formData);
+      let response;
+      if (formData._id) {
+        // If _id exists, it's an update operation
+        response = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/user-info/update/${formData._id}`, formData);
+      } else {
+        // If _id doesn't exist, it's a create operation
+        console.log("Hitting the create endpoint");
+        response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/user-info/create`, formData);
+      }
+
       setPersonalData(response.data); // Update personal data state
-      alert("Data updated successfully!");
+      console.log("Response data:", response.data);
+      
+      // Update formData with the new _id if it was a create operation
+      if (!formData._id) {
+        setFormData(prevData => ({ ...prevData, _id: response.data._id }));
+      }
+      
+      alert(formData._id ? "Data updated successfully!" : "Data created successfully!");
     } catch (err) {
       setError(err);
+      console.error("Error on Submit:", err);
+      alert(`Error: ${err.response?.data?.message || err.message}`);
     }
   };
 
   return (
-    <form onSubmit={() => handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <div className="space-y-12">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -341,7 +369,8 @@ export default function PersonalInfo() {
       </div>
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <button
-          type="submit"
+          type="button"
+          onClick={handleSubmit}
           className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Save
