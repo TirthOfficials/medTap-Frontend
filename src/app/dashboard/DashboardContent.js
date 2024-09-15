@@ -205,7 +205,7 @@ export default function DashboardContent() {
           <div className="flex h-16 shrink-0 items-center">
             <img
               alt="Your Company"
-              src="/images/logo.png"
+              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
               className="h-8 w-auto"
             />
           </div>
