@@ -15,8 +15,8 @@ export default function EmergencyInfo() {
     userAddress: "",
     userZipCode: "",
     userState: "",
-    userCountry: "",
-    relationship: "",
+    userCountry: "United States",
+    relationship: "Spouse",
   });
 
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -47,8 +47,8 @@ export default function EmergencyInfo() {
           userAddress: data[0].userAddress || "",
           userZipCode: data[0].userZipCode || "",
           userState: data[0].userState || "",
-          userCountry: data[0].userCountry || "",
-          relationship: data[0].userRelationship || "",
+          userCountry: data[0].userCountry || "United States",
+          relationship: data[0].userRelationship || "Friend",
         });
         setIsFormVisible(false); // Show the form if data exists
       }
@@ -141,7 +141,7 @@ const handleSubmit = async (e) => {
         <div className="sm:flex-auto">
           <h1 className="text-base font-semibold leading-6 text-gray-900">Emergency Contact Information</h1>
           <p className="mt-2 text-sm text-gray-700">
-            Details of your emergency contact person including name, relationship, and contact information.
+            Details of the emergency contact including name, relationship, and contact information.
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -159,14 +159,17 @@ const handleSubmit = async (e) => {
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+              <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-300">
-                <thead>
+                <thead className="bg-gray-50">
                   <tr>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Name</th>
+                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Relationship</th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Phone</th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Address</th>
+                    <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -182,6 +185,7 @@ const handleSubmit = async (e) => {
                 </tbody>
               </table>
             </div>
+            </div>
           </div>
         </div>
       )}
@@ -190,7 +194,7 @@ const handleSubmit = async (e) => {
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
             <div className="sm:col-span-3">
-              <label htmlFor="userName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="userName" className="block text-sm font-medium text-gray-900">
                 Name
               </label>
               <input
@@ -205,7 +209,7 @@ const handleSubmit = async (e) => {
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="userPhone" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="userPhone" className="block text-sm font-medium text-gray-900">
                 Phone Number
               </label>
               <input
@@ -220,7 +224,7 @@ const handleSubmit = async (e) => {
             </div>
 
             <div className="sm:col-span-4">
-              <label htmlFor="userEmail" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="userEmail" className="block text-sm font-medium text-gray-900">
                 Email address
               </label>
               <input
@@ -235,7 +239,7 @@ const handleSubmit = async (e) => {
             </div>
 
             <div className="sm:col-span-2">
-              <label htmlFor="relationship" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="relationship" className="block text-sm font-medium text-gray-900">
                 Relationship
               </label>
               <select
@@ -255,7 +259,7 @@ const handleSubmit = async (e) => {
             </div>
 
             <div className="sm:col-span-6">
-              <label htmlFor="userAddress" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="userAddress" className="block text-sm font-medium text-gray-900">
                 Street address
               </label>
               <input
@@ -270,7 +274,7 @@ const handleSubmit = async (e) => {
             </div>
 
             <div className="sm:col-span-2">
-              <label htmlFor="userCity" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="userCity" className="block text-sm font-medium text-gray-900">
                 City
               </label>
               <input
@@ -285,7 +289,7 @@ const handleSubmit = async (e) => {
             </div>
 
             <div className="sm:col-span-2">
-              <label htmlFor="userState" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="userState" className="block text-sm font-medium text-gray-900">
                 State / Province
               </label>
               <input
@@ -300,7 +304,7 @@ const handleSubmit = async (e) => {
             </div>
 
             <div className="sm:col-span-2">
-              <label htmlFor="userZipCode" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="userZipCode" className="block text-sm font-medium text-gray-900">
                 ZIP / Postal code
               </label>
               <input
@@ -315,7 +319,7 @@ const handleSubmit = async (e) => {
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="userCountry" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="userCountry" className="block text-sm font-medium text-gray-900">
                 Country
               </label>
               <select

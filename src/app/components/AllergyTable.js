@@ -293,15 +293,13 @@ export default function AllergyTable() {
                 <tbody className="divide-y divide-gray-200 bg-white">
                 {allergies.map((allergy, index) => (
                     <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{allergy.allergen}</td>
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semi text-gray-900 sm:pl-6">{allergy.allergen}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{allergy.severity}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{Array.isArray(allergy.symptoms) ? allergy.symptoms.join(', ') : allergy.symptoms}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{allergy.treatment}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{allergy.diagnosedDate}</td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{allergy.diagnosedDate.substring(0, 10)}</td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                          Edit<span className="sr-only">, {allergy.allergen}</span>
-                        </a>
+                        
                       </td>
                     </tr>
                   ))}

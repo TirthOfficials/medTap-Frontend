@@ -1107,6 +1107,10 @@ select {
 .border-white\/10 {
   border-color: rgb(255 255 255 / 0.1);
 }
+.border-gray-800 {
+  --tw-border-opacity: 1;
+  border-color: rgb(31 41 55 / var(--tw-border-opacity));
+}
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
@@ -1268,6 +1272,9 @@ select {
 .pt-8 {
   padding-top: 2rem;
 }
+.pl-5 {
+  padding-left: 1.25rem;
+}
 .text-left {
   text-align: left;
 }
@@ -1390,6 +1397,9 @@ select {
 }
 .opacity-80 {
   opacity: 0.8;
+}
+.opacity-90 {
+  opacity: 0.9;
 }
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);

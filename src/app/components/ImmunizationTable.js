@@ -116,6 +116,9 @@ export default function ImmunizationTable() {
 					<h1 className="text-base font-semibold leading-6 text-gray-900">
 						Immunizations
 					</h1>
+          <p className="mt-2 text-sm text-gray-700">
+            A list of all immunizations including vaccine, dose, date administered, provider, and notes.
+          </p>
 				</div>
 				<div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
 					<button
@@ -291,14 +294,14 @@ export default function ImmunizationTable() {
 								<tbody className="divide-y divide-gray-200 bg-white">
 									{immunizations.map((immunization) => (
 										<tr key={immunization._id}>
-											<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+											<td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semi text-gray-900 sm:pl-6">
 												{immunization.vaccineName}
 											</td>
 											<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 												{immunization.doseNumber}
 											</td>
 											<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-												{immunization.dateAdministered}
+												{immunization.dateAdministered.substring(0, 10)}
 											</td>
 											<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 												{immunization.provider}
@@ -306,19 +309,8 @@ export default function ImmunizationTable() {
 											<td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
 												{immunization.notes}
 											</td>
-											<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-												<a
-													href="#"
-													className="text-indigo-600 hover:text-indigo-900"
-													onClick={() => {
-														// Implement edit functionality
-													}}
-												>
-													Edit
-													<span className="sr-only">
-														, {immunization.vaccineName}
-													</span>
-												</a>
+											<td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+												
 											</td>
 										</tr>
 									))}

@@ -236,8 +236,8 @@ export default function Home() {
 								Instant Access, Critical Care
 							</h1>
 							<p className="mt-6 text-lg leading-8 text-gray-600">
-								In emergencies, seconds count. Our NFC system securely stores
-								critical medical data, instantly accessible to medical
+								In emergencies, every second counts. Our NFC system securely stores
+								important medical data, instantly accessible to medical
 								professionals with a tap.
 							</p>
 							<div className="mt-10 flex items-center gap-x-6">
