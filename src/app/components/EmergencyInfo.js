@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import useAppContext from "../sessionManager";
 
+
 export default function EmergencyInfo() {
-  const { hashID, setHashID } = useAppContext();
+  const { 
+    sessionID, setSessionID, user, setUser, hashID, setHashID 
+  } = useAppContext();
   const [formData, setFormData] = useState({
     userName: "",
     userPhone: "",
@@ -15,36 +17,63 @@ export default function EmergencyInfo() {
     userRelationship: "",
   });
 
-  // Handle initially loading the form
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log("Fetching emergency contact data...");
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/get-emergency-contacts/${hashID}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("Emergency contact data: ", data);
-        if (data) {
-          setFormData({
-            userName: data.userName || "",
-            userPhone: data.userPhone || "",
-            userEmail: data.userEmail || "",
-            userAddress: data.userAddress || "",
-            userZipCode: data.userZipCode || "",
-            userState: data.userState || "",
-            userCountry: data.userCountry || "",
-            userRelationship: data.userRelationship || "",
-          });
-          setIsFormVisible(true); // Show the form if data exists
-        }
-      } catch (err) {
-        console.error("Error fetching emergency contact data:", err);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
+  const toggleFormVisibility = () => {
+    setIsFormVisible(!isFormVisible);
+  };
+
+
+ // Handle initially loading the form
+ useEffect(() => {
+  const fetchData = async () => {
+    try {
+      console.log("Fetching emergency contact data...");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/get-emergency-contacts/${hashID}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
-    fetchData();
-  }, []);
+      const data = await response.json();
+      console.log("Emergency contact data: ", data);
+      if (data) {
+        setFormData({
+          userName: data.userName || "",
+          userPhone: data.userPhone || "",
+          userEmail: data.userEmail || "",
+          userAddress: data.userAddress || "",
+          userZipCode: data.userZipCode || "",
+          userState: data.userState || "",
+          userCountry: data.userCountry || "",
+          userRelationship: data.userRelationship || "",
+        });
+        setIsFormVisible(true); // Show the form if data exists
+      }
+    } catch (err) {
+      console.error("Error fetching emergency contact data:", err);
+    }
+  };
+  fetchData();
+}, []);
+
+  const getEmergencyByHash = async () => {
+    try {
+      const response = await fetch(
+        `https://medtap-backend.onrender.com/user-info/hash/${hashID}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) throw new Error("Network response was not ok");
+      const result = await response.json();
+      setFormData(result);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
 
   // Update the emergency contact data
   const updateEmergencyContact = async () => {
@@ -77,12 +106,6 @@ export default function EmergencyInfo() {
       console.log(updatedData); // Print the updated form data
       return updatedData;
     });
-  };
-
-  const [isFormVisible, setIsFormVisible] = useState(false);
-
-  const toggleFormVisibility = () => {
-    setIsFormVisible(!isFormVisible);
   };
 
   return (

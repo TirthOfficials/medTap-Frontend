@@ -1,8 +1,7 @@
 {
   "/page": "app/page.js",
   "/api/auth/[auth0]/route": "app/api/auth/[auth0]/route.js",
-  "/immunizations/page": "app/immunizations/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
   "/allergy/page": "app/allergy/page.js",
-  "/emergency/page": "app/emergency/page.js",
-  "/dashboard/page": "app/dashboard/page.js"
+  "/immunizations/page": "app/immunizations/page.js"
 }
