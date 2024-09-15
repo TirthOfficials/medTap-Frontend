@@ -7,8 +7,55 @@ const people = [
   },
   // More people...
 ];
+import useAppContext from "../sessionManager";
+import { useEffect, useState } from "react";
 
 export default function ImmunizationTable() {
+  const { hashID, setHashID } = useAppContext();
+  const [immunizations, setImmunizations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+
+  // Fetch immunizations from the backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/get-immunizations/${hashID}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setImmunizations(data);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [hashID]);
+
+// Update immunization
+const updateImmunization = async (immunization) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/update-immunization/${immunization._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(immunization),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    setImmunizations(data);
+  } catch (err) {
+    setError(err.message);
+  }
+};
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">

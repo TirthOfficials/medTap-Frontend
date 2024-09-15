@@ -26,23 +26,26 @@ export default function PersonalInfo() {
     const fetchData = async () => {
       try {
         if (formData._id) {
-          let response;
-          response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/user-info/${formData._id}`);
-          console.log("Response data: ", response.data);
+          const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/user-info/${formData._id}`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          console.log("Response data: ", data);
           setFormData({
-            userName: response.data.userName,
-            userPhone: response.data.userPhone,
-            userEmail: response.data.userEmail,
-            userInsurance: response.data.userInsurance,
-            userMRN: response.data.userMRN,
-            userHeight: response.data.userHeight,
-            userGender: response.data.userGender,
-            userWeight: response.data.userWeight,
-            userAddress: response.data.userAddress,
-            userCity: response.data.userCity,
-            userZipCode: response.data.userZipCode,
-            userState: response.data.userState,
-            userCountry: response.data.userCountry,
+            userName: data.userName,
+            userPhone: data.userPhone,
+            userEmail: data.userEmail,
+            userInsurance: data.userInsurance,
+            userMRN: data.userMRN,
+            userHeight: data.userHeight,
+            userGender: data.userGender,
+            userWeight: data.userWeight,
+            userAddress: data.userAddress,
+            userCity: data.userCity,
+            userZipCode: data.userZipCode,
+            userState: data.userState,
+            userCountry: data.userCountry,
           });
         }
       } catch (err) {
@@ -68,34 +71,42 @@ export default function PersonalInfo() {
 
   // Handle form submission
   const handleSubmit = async (e) => {
-     e.preventDefault();
-     console.log(process.env.NEXT_PUBLIC_SERVER_URL);
+    e.preventDefault();
+    console.log(process.env.NEXT_PUBLIC_SERVER_URL);
     try {
       let response;
-      if (formData._id) {
-        // If _id exists, it's an update operation
-        response = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/user-info/update/${formData._id}`, formData);
-      } else {
-        // If _id doesn't exist, it's a create operation
-        console.log("Hitting the create endpoint");
-        response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/user-info/create`, formData);
+      const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/user-info/${formData._id ? `update/${formData._id}` : 'create'}`;
+      const method = formData._id ? 'PUT' : 'POST';
+      
+      response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      setPersonalData(response.data); // Update personal data state
-      console.log("Response data:", response.data);
+      const data = await response.json();
+      setPersonalData(data); // Update personal data state
+      console.log("Response data:", data);
       
       // Update formData with the new _id if it was a create operation
       if (!formData._id) {
-        setFormData(prevData => ({ ...prevData, _id: response.data._id }));
+        setFormData(prevData => ({ ...prevData, _id: data._id }));
       }
       
       alert(formData._id ? "Data updated successfully!" : "Data created successfully!");
     } catch (err) {
       setError(err);
       console.error("Error on Submit:", err);
-      alert(`Error: ${err.response?.data?.message || err.message}`);
+      alert(`Error: ${err.message}`);
     }
   };
+     
 
   return (
     <form onSubmit={handleSubmit}>

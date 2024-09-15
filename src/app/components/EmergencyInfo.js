@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import useAppContext from "../sessionManager";
 
 export default function EmergencyInfo() {
+  const { hashID, setHashID } = useAppContext();
   const [formData, setFormData] = useState({
     userName: "",
     userPhone: "",
@@ -18,7 +20,7 @@ export default function EmergencyInfo() {
     const fetchData = async () => {
       try {
         console.log("Fetching emergency contact data...");
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/emergency-contact`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/get-emergency-contacts/${hashID}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -43,6 +45,26 @@ export default function EmergencyInfo() {
     };
     fetchData();
   }, []);
+
+  // Update the emergency contact data
+  const updateEmergencyContact = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/update-emergency-contact/${hashID}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("Emergency contact updated: ", data);
+    } catch (err) {
+      console.error("Error updating emergency contact:", err);
+    }
+  };
 
   // Handle form input changes
   const handleInputChange = (e) => {
