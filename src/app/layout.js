@@ -18,7 +18,7 @@ export const metadata = {
   title: "MedTap",
   description: "Welcome to MedTap",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/images/logo.png",
   },
 };
 

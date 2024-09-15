@@ -118,7 +118,7 @@ export default function DashboardContent() {
               <div className="flex h-16 shrink-0 items-center">
                 <img
                   alt="madtab"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  src="/images/logo.png"
                   className="h-8 w-auto"
                 />
               </div>
@@ -205,7 +205,7 @@ export default function DashboardContent() {
           <div className="flex h-16 shrink-0 items-center">
             <img
               alt="Your Company"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              src="/images/logo.png"
               className="h-8 w-auto"
             />
           </div>
